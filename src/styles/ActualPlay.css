@@ -1,0 +1,51 @@
+.actual-play {
+    padding-top: 1vh ;
+    background: #B5E2E0;
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    gap:1vh;
+}  
+.player-name{
+    color:#ffffff;
+    opacity: 73%;
+    background-color: #363B6A;
+    border-radius: 30px;
+    padding: 4px 40px;
+} 
+.boards-captions{
+    display: flex;
+    font-size: 1.4rem;
+    justify-content: space-around;
+}
+.actual-boards{
+    margin-top: 1vh;
+    color:#ffffff;
+    display: flex;
+    background-color: #363B6A;
+    border-radius: 30px;
+    flex-direction: row;
+}
+.bottom-buttons{
+    display:flex;
+    justify-content: space-between;
+    padding: 2vh;
+    align-items: center;
+
+}
+#shoot #save-game{
+    padding: 2vh  4vh;
+}
+#shoot{
+    background-color: #000000;
+    opacity: 73%;
+    border-color: #000000;
+    border-width: 1px;
+}
+
+#save-game{
+    background-color: #C82A2A;
+    opacity: 1;
+    border-width: 1px;
+}

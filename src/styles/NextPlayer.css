@@ -1,0 +1,42 @@
+.ships-placing{
+    background:#89C8DC;
+    opacity: 73%;
+    width:auto;
+    height: 100vh;
+    display: flex;
+    color: #ffffff;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+#player1-name{
+    border-radius: 30px;
+    background-color: #1b225e;
+    width: 60%;
+    padding: 10px 0;
+}
+
+.ships-placing-captions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:10vh;
+    flex-direction: column;
+}
+.ships-placing-buttons{
+    display: flex;
+    gap:2vh;
+    flex-direction: column;
+    border-radius: 30px;
+}
+.bottom-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh;
+}
+#start, #back{
+    background: #000000;
+    opacity: 1;
+    padding: 10px  30px;
+}

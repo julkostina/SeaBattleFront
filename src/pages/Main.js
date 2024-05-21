@@ -16,18 +16,27 @@ function Main() {
     setIsModalOpen(false);
     navigate('/play');
   };
+  const submit = async (form) => {
+    await fetch('http://localhost:8080/initGame', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form)
+    })
+  }
 
   return (
     <div className="main-container">
-        <img className="main-container-caption"src={SeaBattleImage} alt='Caption "Sea Battle"'/>
-        <div className='main-container-buttons'>
-        <Button style={styles} onClick={handleOpenModal} value='Start' id='button0'/>
+      <img className="main-container-caption" src={SeaBattleImage} alt='Caption "Sea Battle"' />
+      <div className='main-container-buttons'>
+        <Button style={styles} onClick={handleOpenModal} value='Start' id='button0' />
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <Settings/>
-      </Modal >
-        <Button value='Load Game' id='button1'/>
-        </div>
-        <img className="waves-picture"src={WavesImage} alt='Waves'/>
+          <Settings onSubmit={submit} />
+        </Modal >
+        <Button value='Load Game' id='button1' />
+      </div>
+      <img className="waves-picture" src={WavesImage} alt='Waves' />
     </div>
   )
 }

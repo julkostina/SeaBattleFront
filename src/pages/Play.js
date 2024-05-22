@@ -6,31 +6,31 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Play() {
-  const [isDiasabled, setIsDisabled] = React.useState(false);
-    const data = async () => {
+  const [data, setData] = React.useState({});
+
+useEffect(() => {
+  const fetchData = async () => {
     const response = await fetch('http://localhost:8080/initGame', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return await response.json();};
-  const placementField = "placementStrategy"+data.turn;
-  const isPlaced = "placed"+data.turn;
+    const jsonData = await response.json();
+    setData(jsonData);
+  };
+
+  fetchData();
+},[]);
 
 
-  useEffect(() => {
-    if(data.placementField ==="RANDOM"){ // ???
-      setIsDisabled(true);
-    }
-  },[]);
   const handleOneDeckShips = () => {
-    
+  
   };
   const handleTwoDeckShips = () => {
     
@@ -39,6 +39,7 @@ function Play() {
 
   };
   const handleFourDeckShips = () => {
+    console.log("Random placing ships");
 
   };
   const handleRandomPlacing = () => {
@@ -63,40 +64,35 @@ function Play() {
           id={"1deck-ships"}
           value={"One deck ships(NUMBER)"}
           onClick={handleOneDeckShips}
-          disabled = {isDiasabled}
         />
         <Button
           id={"2deck-ships"}
           value={"Two deck ships(NUMBER)"}
           onClick={handleTwoDeckShips}
-          disabled = {isDiasabled}
 
         />
         <Button
           id={"3deck-ships"}
           value={"Three deck ships(NUMBER)"}
           onClick={handleThreeDeckShips}
-          disabled = {isDiasabled}
         />
         <Button
           id={"4deck-ships"}
           value={"Four deck ships(NUMBER)"}
           onClick={handleFourDeckShips}
-          disabled = {isDiasabled}
         />
         <Button
           id={"random-placing-ships"}
           value={"Place ships randomly"}
           onClick={handleRandomPlacing}
-          disabled = {!isDiasabled}
         />
         </div>
        <div className="bottom-buttons">
        <Button id={"actual-play"} value={"Actual play"} onClick={()=>handleClickBottomButtons("actual-play")}/>  
-       <Button id={"back"} value={"Back"} onClick={()=>handleClickBottomButtons("back")} disabled={isPlaced}/>  
+       <Button id={"back"} value={"Back"} onClick={()=>handleClickBottomButtons("back")}/>  
        </div>
       </div>
-      <Board number={data.sizeOfBoard}/>    
+      <Board number={data.size}/>    
     </div>
     
   );

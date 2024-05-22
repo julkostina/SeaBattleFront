@@ -7,7 +7,6 @@ import Modal from '../components/Modal'
 import Settings from '../components/Settings'
 import { useNavigate } from 'react-router-dom';
 
-
 function Main() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -15,6 +14,11 @@ function Main() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  const fileInputRef = React.useRef();
+
+  const onLoadGame = () => {
+    fileInputRef.current.click();
+  }
   const submit = async (form) => {
     setIsModalOpen(false);
     await fetch('http://localhost:8080/initGame', {
@@ -24,9 +28,8 @@ function Main() {
       },
       body: JSON.stringify(form)
     })
-    navigate('/choose-placement');
+    navigate('/play');
   }
-
   const fileChanged = (e) => {
     const file = e.target?.files?.[0];
     if (!file) return;
@@ -41,7 +44,7 @@ function Main() {
         },
         body: JSON.stringify(data)
       })
-      navigate('/choose-placement');
+      navigate('/play');
     }
     reader.readAsText(file);
   }
@@ -54,10 +57,10 @@ function Main() {
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <Settings onSubmit={submit} />
         </Modal >
+        <input type='file' id='load-game' style={{ display: 'none' }}  ref={fileInputRef} onChange={fileChanged} />
         <label htmlFor="load-game">
-          <Button value='Load Game' id='button1' />
+          <Button value='Load Game' id='button1' onClick={onLoadGame}/>
         </label>
-        <input type='file' id='load-game' onChange={fileChanged} />
       </div>
       <img className="waves-picture" src={WavesImage} alt='Waves' />
     </div>

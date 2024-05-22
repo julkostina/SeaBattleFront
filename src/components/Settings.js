@@ -26,9 +26,10 @@ function Settings({ onSubmit }) {
     e.preventDefault();
     onSubmit(formState);
   };
+  const isFormComplete = formState.size && formState.volume && formState.player1 && formState.player2;
 
   const stylesButton = {
-    backgroundColor: "#89C8DC",
+    backgroundColor: isFormComplete ? "#89C8DC" : "#d3d6d6",
     color: "#000000",
     borderRadius: "30px",
     padding: "10px 40px",
@@ -71,7 +72,7 @@ function Settings({ onSubmit }) {
           <PlayerInput value='Player 2' onInput={(e) => setValue('player2', e.target.value)} />
         </div>
       </div>
-      <button type="submit" style={stylesButton}>Start</button>
+      <button type="submit" disabled={!isFormComplete} style={stylesButton}>Start</button>
     </form>
   )
 }

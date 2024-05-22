@@ -7,15 +7,13 @@ import { useNavigate } from 'react-router-dom';
 
 function Play() {
   const [data, setData] = React.useState({});
-
+  const [oneDeck, setOneDeck] = React.useState(0);
+  const [twoDeck, setTwoDeck] = React.useState(0);
+  const [threeDeck, setThreeDeck] = React.useState(0);
+  const [fourDeck, setFourDeck] = React.useState(0);
 useEffect(() => {
   const fetchData = async () => {
-    const response = await fetch('http://localhost:8080/initGame', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    });
+    const response = (await fetch('http://localhost:8080/saveGame'));
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -23,6 +21,10 @@ useEffect(() => {
 
     const jsonData = await response.json();
     setData(jsonData);
+    setOneDeck(jsonData.ships1.oneDeck);
+    setTwoDeck(jsonData.ships1.twoDeck);
+    setThreeDeck(jsonData.ships1.threeDeck);
+    setFourDeck(jsonData.ships1.fourDeck);
   };
 
   fetchData();
@@ -30,7 +32,7 @@ useEffect(() => {
 
 
   const handleOneDeckShips = () => {
-  
+    
   };
   const handleTwoDeckShips = () => {
     
@@ -58,27 +60,27 @@ useEffect(() => {
   return (
     <div className="ships-placing">
       <div className="ships-placing-captions">
-      <div id="player1-name"><h2>Player_1</h2></div>
+      <div id="player1-name"><h2>{data.player1}</h2></div>
         <div className="ships-placing-buttons">
         <Button
           id={"1deck-ships"}
-          value={"One deck ships(NUMBER)"}
+          value={`One deck ships(${oneDeck })`}
           onClick={handleOneDeckShips}
         />
         <Button
           id={"2deck-ships"}
-          value={"Two deck ships(NUMBER)"}
+          value={`Two deck ships(${twoDeck })`}
           onClick={handleTwoDeckShips}
 
         />
         <Button
           id={"3deck-ships"}
-          value={"Three deck ships(NUMBER)"}
+          value={`Three deck ships(${threeDeck })`}
           onClick={handleThreeDeckShips}
         />
         <Button
           id={"4deck-ships"}
-          value={"Four deck ships(NUMBER)"}
+          value={`Four deck ships(${fourDeck })`}
           onClick={handleFourDeckShips}
         />
         <Button
@@ -92,7 +94,7 @@ useEffect(() => {
        <Button id={"back"} value={"Back"} onClick={()=>handleClickBottomButtons("back")}/>  
        </div>
       </div>
-      <Board number={data.size}/>    
+      <Board number={data.sizeOfBoard}/>    
     </div>
     
   );

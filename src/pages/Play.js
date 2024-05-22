@@ -1,30 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "../components/Button";
 import Board from "../components/Board";
 import '../styles/Play.css'
 import { useNavigate } from 'react-router-dom';
 
 
-function Play({number}) {
+function Play() {
+  const [isDiasabled, setIsDisabled] = React.useState(false);
+    const data = async () => {
+    const response = await fetch('http://localhost:8080/initGame', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();};
+  const placementField = "placementStrategy"+data.turn;
+  const isPlaced = "placed"+data.turn;
+
+
+  useEffect(() => {
+    if(data.placementField ==="RANDOM"){ // ???
+      setIsDisabled(true);
+    }
+  },[]);
   const handleOneDeckShips = () => {
-    console.log("1 deck ships");
+    
   };
   const handleTwoDeckShips = () => {
-    console.log("2 deck ships");
+    
   };
   const handleThreeDeckShips = () => {
-    console.log("3 deck ships");
+
   };
   const handleFourDeckShips = () => {
-    console.log("4 deck ships");
+
   };
   const handleRandomPlacing = () => {
     console.log("Random placing ships");
   };
   const navigate = useNavigate();
   function handleClickBottomButtons(id){
-    if(id==="next-player"){
-      navigate('/next-player');
+    if(id==="actual-play"){
+      navigate('/actual-play');
     }
     if(id==="back"){
       navigate('/');
@@ -40,34 +63,40 @@ function Play({number}) {
           id={"1deck-ships"}
           value={"One deck ships(NUMBER)"}
           onClick={handleOneDeckShips}
+          disabled = {isDiasabled}
         />
         <Button
           id={"2deck-ships"}
           value={"Two deck ships(NUMBER)"}
           onClick={handleTwoDeckShips}
+          disabled = {isDiasabled}
+
         />
         <Button
           id={"3deck-ships"}
           value={"Three deck ships(NUMBER)"}
           onClick={handleThreeDeckShips}
+          disabled = {isDiasabled}
         />
         <Button
           id={"4deck-ships"}
           value={"Four deck ships(NUMBER)"}
           onClick={handleFourDeckShips}
+          disabled = {isDiasabled}
         />
         <Button
           id={"random-placing-ships"}
           value={"Place ships randomly"}
           onClick={handleRandomPlacing}
+          disabled = {!isDiasabled}
         />
         </div>
        <div className="bottom-buttons">
-       <Button id={"next-player"} value={"Next player"} onClick={()=>handleClickBottomButtons("next-player")}/>  
-       <Button id={"back"} value={"Back"} onClick={()=>handleClickBottomButtons("back")}/>  
+       <Button id={"actual-play"} value={"Actual play"} onClick={()=>handleClickBottomButtons("actual-play")}/>  
+       <Button id={"back"} value={"Back"} onClick={()=>handleClickBottomButtons("back")} disabled={isPlaced}/>  
        </div>
       </div>
-      <Board number={12}/>    
+      <Board number={data.sizeOfBoard}/>    
     </div>
     
   );

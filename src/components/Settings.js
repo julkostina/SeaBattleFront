@@ -11,8 +11,8 @@ function Settings({ onSubmit }) {
   const [formState, setFormState] = React.useState({
     size: 8,
     volume: 30,
-    firstPlayerName: '',
-    secondPlayerName: ''
+    player1: '',
+    player2: ''
   })
 
   const setValue = (key, value) => {
@@ -65,10 +65,10 @@ function Settings({ onSubmit }) {
           <Slider id="volume-control-slider" value={formState.volume} onChange={(e) => setValue('volume', e.target.value)} aria-labelledby="continuous-slider" />
         </div>
         <div id='player-1'>
-          <PlayerInput value='Player 1' onInput={(e) => setValue('firstPlayerName', e.target.value)} />
+          <PlayerInput value='Player 1' onInput={(e) => setValue('player1', e.target.value)} />
         </div>
         <div id='player-2'>
-          <PlayerInput value='Player 2' onInput={(e) => setValue('secondPlayerName', e.target.value)} />
+          <PlayerInput value='Player 2' onInput={(e) => setValue('player2', e.target.value)} />
         </div>
       </div>
       <button type="submit" style={stylesButton}>Start</button>

@@ -7,7 +7,8 @@ import Modal from '../components/Modal'
 import Settings from '../components/Settings'
 import { useNavigate } from 'react-router-dom';
 
-function Main() {
+function Main({ BACKGROUND_AUDIO = null }) {
+  sessionStorage.removeItem('player');
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const handleOpenModal = () => setIsModalOpen(true);
@@ -20,14 +21,24 @@ function Main() {
     fileInputRef.current.click();
   }
   const submit = async (form) => {
+    const { volume, ...restForm } = form
+
+    localStorage.setItem('volume', volume);
+    BACKGROUND_AUDIO.current.volume = volume / 100;
+
     setIsModalOpen(false);
     await fetch('http://localhost:8080/initGame', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(form)
+      body: JSON.stringify(restForm)
     })
+    sessionStorage.setItem('player', 1);
+    navigate('/play');
+  }
+  const handleJoinSecondPlayer = () => {
+    sessionStorage.setItem('player', 2);
     navigate('/play');
   }
   const fileChanged = (e) => {
@@ -44,6 +55,7 @@ function Main() {
         },
         body: JSON.stringify(data)
       })
+      sessionStorage.setItem('player', 1);
       navigate('/play');
     }
     reader.readAsText(file);
@@ -54,12 +66,13 @@ function Main() {
       <img className="main-container-caption" src={SeaBattleImage} alt='Caption "Sea Battle"' />
       <div className='main-container-buttons'>
         <Button style={styles} onClick={handleOpenModal} value='Start' id='button0' />
+        <Button style={styles} onClick={handleJoinSecondPlayer} value='Join as 2nd player' id='button2' />
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <Settings onSubmit={submit} />
         </Modal >
-        <input type='file' id='load-game' style={{ display: 'none' }}  ref={fileInputRef} onChange={fileChanged} />
+        <input type='file' id='load-game' style={{ display: 'none' }} ref={fileInputRef} onChange={fileChanged} />
         <label htmlFor="load-game">
-          <Button value='Load Game' id='button1' onClick={onLoadGame}/>
+          <Button value='Load Game' id='button1' onClick={onLoadGame} />
         </label>
       </div>
       <img className="waves-picture" src={WavesImage} alt='Waves' />

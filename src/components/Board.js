@@ -1,6 +1,12 @@
 import React from "react";
 import '../styles/Board.css';
-function Board({ number=8 }) {
+function Board({ number = 8, board/* [][] */, point = null/* [x, y] | null */, onCellClick = (x, y) => { } }) {
+  // private static final int EMPTY = 0;
+  // private static final int SHIP = 1;
+  // private static final int HIT = 2;
+  // private static final int MISS = 3;
+  // private static final int DISTANCE = 4;
+
   const styleInnerBoard = {
     padding: "40px",
     display: "grid",
@@ -11,28 +17,28 @@ function Board({ number=8 }) {
     height: "80vh",
     background: "#000000",
     borderRadius: "30px",
-
+    userSelect: "none",
   };
   const calculateFontSize = (number) => {
-    if(number!==8){
+    if (number !== 8) {
       return `1.5rem`;
     }
     return `2rem`;
   };
   const calculateGap = (number) => {
-    if(number===12){
+    if (number === 12) {
       return `0.9vh`;
     }
-    if(number===10){
+    if (number === 10) {
       return `2vh`;
     }
     return `2.4vh`;
   };
-  const calculateGapLetters = (number)=>{
-    if(number===12){
+  const calculateGapLetters = (number) => {
+    if (number === 12) {
       return `1.8vw`;
     }
-    if(number===10){
+    if (number === 10) {
       return `2.5vw`;
     }
     return `3vw`;
@@ -49,7 +55,7 @@ function Board({ number=8 }) {
     justifyContent: 'center'
   }
 
-  const styleNumbers ={
+  const styleNumbers = {
     position: 'absolute',
     top: '17px',
     bottom: '0',
@@ -69,31 +75,58 @@ function Board({ number=8 }) {
     ),
     number: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   };
+  const styleCell = {
+    cursor: "pointer", backgroundColor: "#D9D9D9", borderRadius: "3px",
+    display: "flex", justifyContent: "center", alignItems: "center",
+    fontSize: "1.5rem",
+  }
+
+  const getCellContent = (x, y) => {
+    switch (board?.[y]?.[x]) {
+      case 0:
+        return point && point[0] === x && point[1] === y ? "🎯" : "";
+      case 1:
+        return "🚢";
+      case 2:
+        return "💥";
+      case 3:
+        return "💨";
+      case 4:
+        return "🌊";
+      default:
+        return '';
+    }
+  }
 
   return (
     <div>
       <div className="board">
-      <div className="letters" style={styleLetters}>
-        {Array.from({ length: number }, (_, i) => (
-          <p>{index.letter[i]}</p>
-        ))}
-      </div>
-      <div className="numbers"style={styleNumbers}>
-        {Array.from({ length: number }, (_, i) => (
-          <p>{index.number[i]}</p>
-        ))}
-      </div>
+        <div className="letters" style={styleLetters}>
+          {Array.from({ length: number }, (_, i) => (
+            <p key={i}>{index.letter[i]}</p>
+          ))}
+        </div>
+        <div className="numbers" style={styleNumbers}>
+          {Array.from({ length: number }, (_, i) => (
+            <p key={i}>{index.number[i]}</p>
+          ))}
+        </div>
         <div className="elements" style={styleInnerBoard}>
-          {Array.from({ length: number * number }, (_, i) => (
-            <div
-              key={"el" + i}
-              id={"el" + i}
-              style={{ backgroundColor: "#D9D9D9", borderRadius: "3px" }}
-            ></div>
+          {Array.from({ length: number }, (_, y) => (
+            Array.from({ length: number }, (_, x) => (
+              <div
+                id={`el${x};${y}`}
+                key={`${x};${y}`}
+                style={styleCell}
+                onClick={() => onCellClick(x, y)}
+              >
+                {getCellContent(x, y)}
+              </div>
+            ))
           ))}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

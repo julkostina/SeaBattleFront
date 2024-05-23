@@ -3,8 +3,10 @@ import "../styles/ActualPlay.css";
 import Button from "../components/Button";
 import Board from "../components/Board";
 
-function ActualPlay({ number }) {
+function ActualPlay({ number, HIT_AUDIO = null }) {
   const handleOnShoot = () => {
+    HIT_AUDIO.current.currentTime = 0;
+    HIT_AUDIO.current.play();
     console.log("Shoot");
   };
   const handleOnSaveGame = () => {
@@ -26,7 +28,7 @@ function ActualPlay({ number }) {
           <Board number={number} />
         </div>
         <div className="bottom-buttons">
-          <Button id="shoot" value="Shoot" onClick={() => handleOnShoot} />
+          <Button id="shoot" value="Shoot" onClick={handleOnShoot} />
           <Button
             id="save-game"
             value="Save game"

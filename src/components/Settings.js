@@ -10,7 +10,7 @@ import '../styles/Settings.css';
 function Settings({ onSubmit }) {
   const [formState, setFormState] = React.useState({
     size: 8,
-    volume: 30,
+    volume: parseInt(localStorage.getItem('volume') ?? '50'),
     player1: '',
     player2: ''
   })

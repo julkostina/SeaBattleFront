@@ -40,7 +40,7 @@ function App() {
         <Route path="/actual-play" element={<ActualPlay BACKGROUND_AUDIO={BACKGROUND_AUDIO} HIT_AUDIO={HIT_AUDIO} />} />
         {/* <Route path="/results" element={<Result />} /> */}
       </Routes>
-      <audio ref={BACKGROUND_AUDIO} id="background-music" src="/sounds/328713-Ambience_Exterior_Wave_Boulders_Pier_Between_Rocks_More_Distant_Waves_Hard_Loop.wav" loop />
+      <audio ref={BACKGROUND_AUDIO} id="background-music" src="/sounds/328713-Ambience_Exterior_Wave_Boulders_Pier_Between_Rocks_More_Distant_Waves_Hard_Loop.wav" loop autoPlay />
       <audio ref={HIT_AUDIO} id="hit-music" src="/sounds/249101-Light_Naval_Cannon_Blast_4.wav" />
     </Router>
   );

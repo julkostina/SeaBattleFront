@@ -56,7 +56,7 @@ function Main({ BACKGROUND_AUDIO = null }) {
         body: JSON.stringify(data)
       })
       sessionStorage.setItem('player', 1);
-      navigate('/play');
+      navigate('/actual-play');
     }
     reader.readAsText(file);
   }

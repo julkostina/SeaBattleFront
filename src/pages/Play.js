@@ -25,11 +25,14 @@ function Play() {
       }
 
       const jsonData = await response.json();
-      setData(jsonData);
-      setOneDeck(jsonData.ships1.oneDeck);
-      setTwoDeck(jsonData.ships1.twoDeck);
-      setThreeDeck(jsonData.ships1.threeDeck);
-      setFourDeck(jsonData.ships1.fourDeck);
+      if (jsonData[`player${player}_board`]?.board?.some(row => row.some(cell => cell !== 0))) {
+        navigate('/actual-play');
+      }
+      setData(jsonData.game);
+      setOneDeck(jsonData.game.ships1.oneDeck);
+      setTwoDeck(jsonData.game.ships1.twoDeck);
+      setThreeDeck(jsonData.game.ships1.threeDeck);
+      setFourDeck(jsonData.game.ships1.fourDeck);
     };
 
     fetchData();
@@ -37,36 +40,37 @@ function Play() {
 
 
   const handleRandomPlacing = async () => {
-    // const ships = [];
-    // const directions = [[0, 1], [1, 0]];
-    // const sizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
-    // for (const size of sizes) {
-    //   let ship = null;
-    //   while (ship === null) {
-    //     const x = Math.floor(Math.random() * data.sizeOfBoard);
-    //     const y = Math.floor(Math.random() * data.sizeOfBoard);
-    //     const direction = directions[Math.floor(Math.random() * directions.length)];
-    //     const x2 = x + direction[0] * (size - 1);
-    //     const y2 = y + direction[1] * (size - 1);
-    //     if (x2 >= 0 && x2 < data.sizeOfBoard && y2 >= 0 && y2 < data.sizeOfBoard) {
-    //       ship = [[x, y], [x2, y2]];
-    //     }
-    //   }
-    //   ships.push(ship);
-    // }
-    // setShips(ships);
-    // setOneDeck(0);
-    // setTwoDeck(0);
-    // setThreeDeck(0);
-    // setFourDeck(0);
-    await fetch('http://localhost:8080/placeShips', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ shipCoordinates: null, placement: 'RANDOM', player }),
-    })
-    navigate('/actual-play');
+    const ships = [];
+    const directions = [[0, 1], [1, 0]];
+    const sizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+    for (const size of sizes) {
+      let ship = null;
+      while (ship === null) {
+        const x = Math.floor(Math.random() * data.sizeOfBoard);
+        const y = Math.floor(Math.random() * data.sizeOfBoard);
+        const direction = directions[Math.floor(Math.random() * directions.length)];
+        const x2 = x + direction[0] * (size - 1);
+        const y2 = y + direction[1] * (size - 1);
+        if (x2 >= 0 && x2 < data.sizeOfBoard && y2 >= 0 && y2 < data.sizeOfBoard) {
+          ship = [[x, y], [x2, y2]];
+        }
+      }
+      ships.push(ship);
+    }
+    setShips(ships);
+    setOneDeck(0);
+    setTwoDeck(0);
+    setThreeDeck(0);
+    setFourDeck(0);
+    // await fetch('http://localhost:8080/placeShips', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ shipCoordinates: null, placement: 'RANDOM', player }),
+    // })
+    // await handleClickBottomButtons("actual-play");
+    // navigate('/actual-play');
   };
   const navigate = useNavigate();
   async function handleClickBottomButtons(id) {
